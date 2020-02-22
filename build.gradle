@@ -1,0 +1,65 @@
+buildscript {
+    ext {
+        gradleLombokPluginVersion = '2.0'
+        gitPluginVersion = '2.0.0'
+    }
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "io.franzbecker:gradle-lombok:${gradleLombokPluginVersion}"
+    }
+}
+
+plugins {
+    id 'java'
+    id 'idea'
+}
+
+apply plugin: 'io.franzbecker.gradle-lombok'
+
+group 'ua.dudka'
+version '1.0-SNAPSHOT'
+
+
+repositories {
+    mavenCentral()
+}
+
+
+compileJava {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+compileTestJava {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+lombok {
+    version = "1.18.10"
+    sha256 = "2836e954823bfcbad45e78c18896e3d01058e6f643749810c608b7005ee7b2fa"
+}
+
+dependencies {
+    implementation 'com.google.guava:guava:27.0.1-jre'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.1'
+    implementation 'org.apache.commons:commons-lang3:3.8.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.4.1'
+    testCompile 'org.projectlombok:lombok:1.18.10'
+    compile 'org.openjdk.jmh:jmh-core:1.23'
+    compile 'org.openjdk.jmh:jmh-generator-annprocess:1.23'
+}
+
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+    maxParallelForks = (int) (Runtime.runtime.availableProcessors().intdiv(2) ?: 1)
+    reports.html.enabled = false
+    reports.junitXml.enabled = false
+}
