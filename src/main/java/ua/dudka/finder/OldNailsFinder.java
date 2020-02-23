@@ -9,18 +9,18 @@ import java.util.stream.Collectors;
 public class OldNailsFinder implements NailsFinder {
 
     @Override
-    public int solution(int[] A, int Y) {
-        if (A == null || A.length == 0) {
+    public int find(int[] nails, int changesCount) {
+        if (nails == null || nails.length == 0) {
             return 0;
         }
-        Map<Integer, Long> nailsCountByLength = Arrays.stream(A)
+        Map<Integer, Long> nailsCountByLength = Arrays.stream(nails)
                 .boxed()
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
-        Integer maxLength = A[A.length - 1]; //only diff
+        Integer maxLength = nails[nails.length - 1]; //only diff
         int secondMaxLength = getSecondMaxLength(nailsCountByLength, maxLength);
 
-        return getMaxNailsCount(A, Y, secondMaxLength);
+        return getMaxNailsCount(nails, changesCount, secondMaxLength);
     }
 
     private int getSecondMaxLength(Map<Integer, Long> nailsCountByLength, Integer maxLength) {

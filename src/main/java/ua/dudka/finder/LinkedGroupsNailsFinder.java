@@ -1,28 +1,26 @@
 package ua.dudka.finder;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-
 import java.util.LinkedList;
+import java.util.Objects;
 
-public class NewNailsFinder implements NailsFinder {
+public class LinkedGroupsNailsFinder implements NailsFinder {
 
     @Override
-    public int solution(int[] A, int Y) {
-        Integer result = checkCornerCases(A, Y);
+    public int find(int[] nails, int changesCount) {
+        Integer result = checkCornerCases(nails, changesCount);
         if (result != null) {
             return result;
         }
 
-        int length = A.length;
+        int length = nails.length;
         int maxNailLength = 0;
 
-        LinkedList<Group> nailsGroups = getGroups(A);
+        LinkedList<Group> nailsGroups = getGroups(nails);
 
         for (int i = 0; i < nailsGroups.size() - 1; i++) {
             Group group = nailsGroups.get(i);
 
-            int possibleKicksCount = Math.min(Y, length - group.end - 1);
+            int possibleKicksCount = Math.min(changesCount, length - group.end - 1);
             int groupCountWithPossibleKicks = possibleKicksCount + group.count;
             if (groupCountWithPossibleKicks > maxNailLength) {
                 maxNailLength = groupCountWithPossibleKicks;
@@ -64,12 +62,31 @@ public class NewNailsFinder implements NailsFinder {
         return nailsGroups;
     }
 
-    @AllArgsConstructor
-    @EqualsAndHashCode(of = "value")
-    static class Group {
+    private static class Group {
         int value;
         int count;
         int start;
         int end;
+
+        public Group(int value, int count, int start, int end) {
+            this.value = value;
+            this.count = count;
+            this.start = start;
+            this.end = end;
+        }
+
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Group group = (Group) o;
+            return value == group.value;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(value);
+        }
     }
 }

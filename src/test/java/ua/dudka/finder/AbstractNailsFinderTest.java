@@ -9,19 +9,21 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-class NewNailsFinderTest {
+abstract class AbstractNailsFinderTest {
 
     private NailsFinder finder;
 
     @BeforeEach
     void setUp() {
-        finder = new NewNailsFinder();
+        finder = getFinder();
     }
+
+    protected abstract NailsFinder getFinder();
 
     @ParameterizedTest
     @MethodSource("data")
     void test(int[] a, int y, int result) {
-        int solution = finder.solution(a, y);
+        int solution = finder.find(a, y);
 
         Assertions.assertEquals(solution, result);
     }

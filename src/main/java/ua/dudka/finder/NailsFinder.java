@@ -1,5 +1,5 @@
 package ua.dudka.finder;
 
 public interface NailsFinder {
-    int solution(int[] A, int Y);
+    int find(int[] nails, int changesCount);
 }
